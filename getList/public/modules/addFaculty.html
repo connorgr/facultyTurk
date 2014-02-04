@@ -1,0 +1,130 @@
+<div id="consent">
+
+<h1>Faculty Information Task</h1>
+
+Please:
+<ol>
+  <li>Find the faculty list webpage for ______. Try googling "_____ computer science faculty list". Paste the URL in the appropriate box below.</li>
+  <li>For each assistant professor, associate professor, or “professor” (sometimes called a full professor) on the faculty page collect the following:
+    <ul>
+      <li>Name</li>
+      <li>Their homepage/website URL</li>
+      <li>Type of professor</li>
+      <li>Where they got their PhD from</li>
+      <li>If it is listed, what their research area is.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Important:</strong> If a person is not an assistant professor, associate professor, or “professor” (sometimes called a full professor) you do not need to collect their information. You do not need to collect the names of research professors, emeritus professors, affiliated professors, or adjunct professors.</p>
+
+<p><strong>Important:</strong> You are required to submit the website URLs you are copying information from.</p>
+
+<p><strong>Important:</strong> Sometimes the information (e.g., where they got their PhD from) will be on their personal website, not the faculty page.</p>
+
+<h2>Research Areas</h2>
+Here is a list of research areas that all computer science research falls under:
+<ul>
+  <li>Algorithms &amp; Theory</li>
+  <li>Artificial Intelligence</li>
+  <li>Bioinformatics &amp; Computational Biology</li>
+  <li>Computer Education</li>
+  <li>Computer Vision</li>
+  <li>Data Mining</li>
+  <li>Databases</li>
+  <li>Distributed &amp; Parallel Computing</li>
+  <li>Graphics</li>
+  <li>Hardware &amp; Architecture</li>
+  <li>Human-Computer Interaction</li>
+  <li>Information Retrieval</li>
+  <li>Machine Learning &amp; Pattern Recognition</li>
+  <li>Multimedia</li>
+  <li>Natural Language &amp; Speech</li>
+  <li>Networks &amp; Communications</li>
+  <li>Operating Systems</li>
+  <li>Programming Languages</li>
+  <li>Real-Time &amp; Embedded Systems</li>
+  <li>Scientific Computing</li>
+  <li>Security &amp; Privacy</li>
+  <li>Simulation</li>
+  <li>Software Engineering</li>
+  <li>World Wide Web</li>
+</ul>
+
+<h2>Add Faculty</h2>
+Paste the department faculty page URL here: <input type="text" name="facultyURL" id="facultyURL">
+<div id="addArea"></div>
+<button id="addFacultyBtn">Add another faculty member</button>
+<hr />
+I am done entering faculty members: <input type="checkbox" id="iamdone"/>
+</div>
+
+<style>
+  #invalidMessage {
+    display: none;
+    color: red;
+  }
+
+  .facultyForm {
+    margin: 40px 0;
+  }
+</style>
+
+<script>
+(function() {
+  var data = {},
+      numEntered = 0;
+
+  init();
+
+  function addFaculty() {
+    var facultyId = 'faculty' + numEntered,
+        startHTML = '<div class="facultyForm" id="'+facultyId+'Div"><form id="'+facultyId+'">',
+        innerHTML = 'Name: <input type="text" name="name"><br />Their Homepage/Personal Website: <input type="text" name="website"><br />Type of professor: <input type="text" name="type"><br />Where they got their PhD from: <input type="text" name="phd"><br />Research area(s) (if listed): <input type="text" name="research"><br />Sources: (if you found any of the above information not on the faculty page, include the URLs here)<br /><textarea rows="4" cols="50" name="sources"></textarea>',
+        endHTML = '</form></div>',
+        addFacultyForm = startHTML + innerHTML + endHTML;
+    $('#addArea').append(addFacultyForm);
+
+    data[facultyId] = {};
+    var formInput = d3.select('#'+facultyId).selectAll('input'),
+        formSources = d3.select('#'+facultyId).select('textarea');
+
+    // Log any changes to the form
+    $('form#'+facultyId).change(function() {
+      $('form#'+facultyId+' :input').each(function(){
+        var input = $(this),
+            inputName = input.attr('name'),
+            parentId = input.parent().attr('id');
+        data[parentId][inputName] = input.val();
+      });
+    });
+
+    numEntered++;
+  }
+
+  function init() {
+    experimentr.hideNext();
+    addFaculty();
+
+    $('#facultyURL').change(function() {
+      var input = $(this);
+      data['urlFaculty'] = input.val();
+    });
+
+    d3.select('#addFacultyBtn')
+      .on('click', addFaculty);
+    d3.select('#iamdone')
+      .on('click', function() {
+        if(this.checked == true) {
+          experimentr.addData(data);
+          experimentr.showNext();
+          experimentr.release();
+        }
+        else {
+          experimentr.hideNext();
+        }
+      });
+  }
+
+}());
+</script>

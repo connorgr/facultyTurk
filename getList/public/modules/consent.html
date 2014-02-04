@@ -1,0 +1,107 @@
+<div id="consent">
+
+<h2>Faculty Gathering</h2>
+
+<p>
+<<<<<<< HEAD
+This HIT asks people to collect information about university faculty. It contributes to a class project and potential research at Brown University.
+=======
+This is a web-based experiment that asks people to read stories and answer simple questions.
+This story may involve moderate graphic content such as that found in newspaper articles.
+After reading the story, you will be asked to rate what you thought of the story through a visual scale.
+You'll also be asked some additional questions for verification purposes.
+Participation takes between 5 and 10 minutes.
+>>>>>>> cbc45ceace16722559befce8e88db27093cc2d41
+</p>
+
+<p>Your task is to collect information about faculty in the computer science department at ___. There are two parts of this task:</p>
+
+<ol>
+  <li>Find the faculty page for the computer science department at _________.</li>
+  <li>For each assistant professor, associate professor, or “professor” (sometimes called a full professor) on the faculty page collect the following:
+    <ul>
+      <li>Name</li>
+      <li>Their homepage/website URL</li>
+      <li>Type of professor</li>
+      <li>Where they got their PhD from</li>
+      <li>If it is listed, what their research area is.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Your submission will be verified as to whether or not it lists all relevant faculty and the correctness of your responses.</strong></p>
+
+<p>You will be shown the instructions again once you start the task on the following page</p>
+
+<p>
+Please enter your Amazon Worker Id. <strong>You may only complete this HIT once.</strong> Subsequent completions (e.g. reading the same story twice) will not be accepted:
+<br>
+
+<span id="invalidMessage">
+Our records show that you have taken part in this study before, so we cannot allow you to take this HIT again at this time. Please contact us if you feel this is in error.
+</span>
+</p>
+
+<input type="text" id="workerId" name="workerId" disabled="true" size="30" />
+<button id="checkId" type="button">checkId</button>
+
+<p>
+Do you agree to take part in this task?
+</p>
+
+<p>
+<button id="consentYes" disabled="true" type="button">I Agree</button>
+</p>
+
+<p>
+<strong>Note: this HIT requires a modern browser. If you are not using Chrome or Firefox, the "I Agree" button may not activate.</strong>
+</p>
+
+</div>
+
+<style>
+  #invalidMessage {
+    display: none;
+    color: red;
+  }
+</style>
+
+<script>
+(function() {
+  var data    = {}
+    , workers = null;
+
+  init();
+
+  function init() {
+    experimentr.hideNext();
+
+    // load previous workers file
+    d3.json('modules/blocked-workers.json', function(err, d) {
+      workers = d;
+      d3.select('#workerId').attr('disabled', null);
+    });
+
+    d3.selectAll('#workerId')
+      .on('keypress', function() { data.workerId = this.value; })
+      .on('blur', function() { data.workerId = this.value; });
+
+    d3.select('#consentYes').on('click', experimentr.next);
+
+    d3.select('#checkId').on('click', validate);
+  }
+
+  function validate() {
+    if( data.workerId ) {
+      experimentr.addData(data);
+
+      if( workers.indexOf(data.workerId) == -1 ) {
+        d3.select('#consentYes').attr('disabled', null);
+      } else {
+        d3.select('#invalidMessage').style('display', 'inline');
+      }
+    }
+  }
+
+}());
+</script>
