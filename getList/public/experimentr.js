@@ -78,7 +78,6 @@ experimentr = function() {
 
   // The HTTP POST code for saving experiment data.
   experimentr.save = function(d) {
-    console.log(jQuery.parseJSON(data));
     d3.xhr('/')
       .header("Content-Type", "application/json")
       .post(JSON.stringify(data), function(err, res) {
