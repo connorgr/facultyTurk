@@ -4,7 +4,7 @@
 
 Please:
 <ol>
-  <li>Find the faculty list webpage for ______. Try googling "_____ computer science faculty list". Paste the URL in the appropriate box below.</li>
+  <li>Find the faculty list webpage for UNC - Chapel Hill. Try googling "UNC - Chapel Hill computer science faculty". Paste the URL in the appropriate box below.</li>
   <li>For each assistant professor, associate professor, or “professor” (sometimes called a full professor) on the faculty page collect the following:
     <ul>
       <li>Name</li>
@@ -95,7 +95,7 @@ I am done entering faculty members: <input type="checkbox" id="iamdone"/>
         var input = $(this),
             inputName = input.attr('name'),
             parentId = input.parent().attr('id');
-        data[parentId][inputName] = input.val();
+        data[parentId + '_' + inputName] = input.val();
       });
     });
 
