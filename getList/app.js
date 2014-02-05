@@ -1,17 +1,18 @@
 /* global require:true, console:true, process:true, __dirname:true */
 'use strict'
 
-// Example run command: `node app.js 9000 true`; port 9000 with debug printing on.
+// Example run command: `node app.js 9000 6380 true`; listen on port 9000, connect to redis on 6380, debug printing on.
 
 var express     = require('express')
   , http        = require('http')
   , redis       = require('redis')
   , redisClient
   , port        = process.argv[2] || 8000
-  , debug       = process.argv[3] || null
+  , rport       = process.argv[3] || 6379
+  , debug       = process.argv[4] || null
 
 // Database setup
-redisClient = redis.createClient()
+redisClient = redis.createClient(rport)
 
 redisClient.on('connect', function() {
   console.log('Connected to redis.')
@@ -33,7 +34,6 @@ app.use(express.static(__dirname + '/public'))
 app.post('/', function handlePost(req, res) {
   // Get experiment data from request body
   var d = req.body
-  console.log(d);
   // If a postId doesn't exist, add one (it's random, based on date)
   if (!d.postId) d.postId = (+new Date()).toString(36)
   // Add a timestamp
