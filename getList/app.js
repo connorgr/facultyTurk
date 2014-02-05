@@ -33,6 +33,7 @@ app.use(express.static(__dirname + '/public'))
 app.post('/', function handlePost(req, res) {
   // Get experiment data from request body
   var d = req.body
+  console.log(d);
   // If a postId doesn't exist, add one (it's random, based on date)
   if (!d.postId) d.postId = (+new Date()).toString(36)
   // Add a timestamp
